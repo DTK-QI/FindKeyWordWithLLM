@@ -1,0 +1,27 @@
+Identify and extract sentences that contain the specified keywords from the given report.
+
+Keywords:
+- Colon cancer with bone metastasis, liver metastasis, lung metastasis, liver and lung metastases, peritoneal tumor seeding, Consider local recurrent tumor involving left seminal vesicle and rectum, Consider residual/recurrent tumor at the rectal region abutting the seminal vesicle, Consider residual/recurrent tumor with peri-rectal invasion, Enlarged change in size of the peritoneal seeding tumor, Favor recurrent rectal cancer, Favoring metastasis from colon cecum cancer, Metastatic adenocarcinoma of colon origin, Metastatic carcinoma of colonic origin, Metastatic carcinoma of colorectal origin, Metastatic lymphadenopathies in the pericolonic region, Rectal cancer adenocarcinoma with liver metastasis, Rectal mucinous adenocarcinoma, Rectosigmoid colon adenocarcinoma, Recurrent colon cancer, Sigmoid colon cancer with recurrence, Recurrent rectal cancer, Suspect recurrent tumor.
+
+Report to analyze:
+\"This is a sample report text. It mentions liver metastasis and lung metastasis.\"
+
+Matching rules:
+- Perform **case-insensitive** exact matches.
+- Only return **whole phrase** matches (i.e., \"colon cancer\" must match exactly, not \"colon cecum cancer\").
+- If multiple keywords match the same sentence, return **all matching keywords** in separate objects.
+- Extract the **entire sentence** that contains the keyword.
+- If no keywords match, return an empty JSON array `[]`.
+
+Output format:
+```json
+[
+    {
+        \"keyword\": \"liver metastasis\",
+        \"matches\": \"It mentions liver metastasis.\"
+    },
+    {
+        \"keyword\": \"lung metastasis\",
+        \"matches\": \"It mentions lung metastasis.\"
+    }
+]

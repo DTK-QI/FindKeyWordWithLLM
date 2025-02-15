@@ -1,62 +1,53 @@
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
+from llama_index.embeddings import HuggingFaceEmbedding
+from llama_index import ServiceContext
+from llama_index.llms import HuggingFaceLLM
 import warnings
-import logging
 
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
-warnings.filterwarnings('ignore')
 warnings.filterwarnings('ignore')
 
 class ModelConfig:
     def __init__(self):
-        self.model_name = "deepseek-ai/DeepSeek-R1-Distill-Llama-8B"
+        self.model_name = "meta-llama/Llama-3.2-3b"
         self.tokenizer = None
         self.model = None
+        self.llm = None
+        self.service_context = None
         self.initialize_model()
     
     def initialize_model(self):
-        try:
-            if self.tokenizer is None:
-                logger.info(f"正在載入 tokenizer: {self.model_name}")
-                self.tokenizer = AutoTokenizer.from_pretrained(
-                    self.model_name,
-                    trust_remote_code=True
-                )
-                self.tokenizer.pad_token = self.tokenizer.eos_token
+        if self.tokenizer is None:
+            self.tokenizer = AutoTokenizer.from_pretrained(self.model_name)
+            self.tokenizer.pad_token = self.tokenizer.eos_token
             
-            if self.model is None:
-                logger.info(f"正在載入模型: {self.model_name}")
-                self.model = AutoModelForCausalLM.from_pretrained(
-                    self.model_name,
-                    torch_dtype=torch.float16 if torch.cuda.is_available() else torch.float32,
-                    device_map="auto",
-                    pad_token_id=self.tokenizer.eos_token_id,
-                    trust_remote_code=True
-                )
-                logger.info("模型載入完成")
-        except Exception as e:
-            logger.error(f"模型初始化錯誤: {str(e)}")
-            raise
-
-    def generate_response(self, prompt: str, max_length: int = 256) -> str:
-        try:
-            inputs = self.tokenizer(prompt, return_tensors="pt")
-            inputs = inputs.to(self.model.device)
-            
-            outputs = self.model.generate(
-                **inputs,
-                max_new_tokens=max_length,
-                temperature=0.7,
-                top_p=0.95,
-                do_sample=True,
+        if self.model is None:
+            self.model = AutoModelForCausalLM.from_pretrained(
+                self.model_name,
+                torch_dtype=torch.float16,
+                device_map="auto",
                 pad_token_id=self.tokenizer.eos_token_id
             )
             
-            response = self.tokenizer.decode(outputs[0], skip_special_tokens=True)
-            return response
-        except Exception as e:
-            logger.error(f"生成回應時發生錯誤: {str(e)}")
-            raise
+        if self.llm is None:
+            self.llm = HuggingFaceLLM(
+                model=self.model,
+                tokenizer=self.tokenizer,
+                context_window=2048,
+                max_new_tokens=256
+            )
+            
+        if self.service_context is None:
+            embed_model = HuggingFaceEmbedding(
+                model_name="sentence-transformers/all-mpnet-base-v2"
+            )
+            self.service_context = ServiceContext.from_defaults(
+                llm=self.llm,
+                embed_model=embed_model
+            )
+    
+    def get_service_context(self):
+        return self.service_context
+
 # Create a singleton instance
 model_config = ModelConfig()
