@@ -1,86 +1,91 @@
-# Medical Report Keyword Search API
+# Cancer Report Analysis API
+
+This FastAPI application provides an API for analyzing cancer reports using the Llama 3.2 3B model and LlamaIndex. The system automatically searches for predefined cancer-related keywords and patterns in the provided medical reports.
+
+## Installation
+
+1. Clone the repository:
+```bash
+$ git clone <repository_url>
+$ cd <repository_directory>
+```
+
+2. Create a virtual environment and activate it:
+```bash
+$ python -m venv venv
+$ source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+```
+
+3. Install the required dependencies:
+```bash
+$ pip install -r requirements.txt
+```
+
+## Usage
+
+1. Run the FastAPI application:
+```bash
+$ uvicorn main:app --reload
+```
+
+2. The API will be available at `http://localhost:8080`.
 
 ## API Endpoints
 
-### 1. Get Keywords
-```
-GET http://localhost:8000/keywords/
-```
+### POST /search/
 
-### 2. Search Reports
-```
-POST http://localhost:8000/search/
-Content-Type: application/json
-```
+Analyzes a medical report for predefined cancer-related patterns and keywords.
 
-Parameters:
-- similarity_threshold: Similarity threshold (optional, default 0.7)
-- max_results: Maximum number of results (optional, default 10)
+#### Request Body
 
-### Request Format
-
-Basic Format:
 ```json
 {
-  "reports": [
-    { "content": "Report content 1" },
-    { "content": "Report content 2" }
-  ]
+    "report": "Your medical report text here"
 }
 ```
 
-Example:
+#### Response
+
+Returns a list of matches for each predefined keyword found in the report:
+
 ```json
-{
-  "reports": [
-    { 
-      "content": "Imaging Report: Chest CT. Findings: 2.5cm nodule in right upper lobe, mediastinal lymphadenopathy. Conclusion: Suspected recurrence"
+[
+    {
+        "keyword": "liver metastasis",
+        "matches": [
+            "Patient shows signs of liver metastasis",
+            "Similar patterns suggesting liver involvement"
+        ],
+        "extracted_info": []
     },
     {
-      "content": "Pathology Report: Lung adenocarcinoma, moderately differentiated, tumor cell invasion observed"
+        "keyword": "recurrent rectal cancer",
+        "matches": [
+            "Symptoms indicate recurrent rectal cancer"
+        ],
+        "extracted_info": []
     }
-  ]
-}
+]
 ```
 
-### Response Format
+## Project Structure
 
-Successful Response (200 OK):
-```json
-{
-  "results": [
-    {
-      "keyword": "lung adenocarcinoma",
-      "matches": [
-        {
-          "text": "Pathology Report: Lung adenocarcinoma, moderately differentiated",
-          "similarity_score": 0.92
-        }
-      ]
-    },
-    {
-      "keyword": "lymphadenopathy",
-      "matches": [
-        {
-          "text": "2.5cm nodule in right upper lobe, mediastinal lymphadenopathy",
-          "similarity_score": 0.88
-        }
-      ]
-    }
-  ]
-}
+```
+app/
+    __pycache__/
+    models.py     - Data models and request/response schemas
+    utils.py      - Core functionality and predefined keywords
+main.py          - FastAPI application and routes
+requirements.txt - Project dependencies
 ```
 
-Error Response (400 Bad Request):
-```json
-{
-  "detail": "No matching results found"
-}
-```
+## Predefined Keywords
 
-## Service Setup
-```bash
-uvicorn main:app --reload
-```
+The system automatically searches for patterns related to:
+- Metastasis (liver, lung, bone)
+- Recurrent tumors
+- Cancer progression
+- Treatment responses
+- And more specific medical terminology
 
-API Documentation: http://localhost:8000/docs
+No need to specify keywords in the request - the system uses a comprehensive set of predefined medical terms and patterns.
