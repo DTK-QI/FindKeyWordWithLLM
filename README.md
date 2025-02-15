@@ -1,6 +1,19 @@
-# Cancer Report Analysis API
+# Cancer Report Analysis
 
-This FastAPI application provides an API for analyzing cancer reports using the Llama 3.2 3B model and LlamaIndex. The system automatically searches for predefined cancer-related keywords and patterns in the provided medical reports.
+This project provides a comprehensive solution for analyzing medical reports using advanced language models and a user-friendly web interface.
+
+## Components
+
+### 1. FastAPI Backend
+- Provides API endpoints for medical report analysis
+- Uses LLaMA model for text processing
+- Handles both local and remote LLM processing
+
+### 2. Streamlit Web Interface
+- User-friendly interface for report analysis
+- Real-time text highlighting
+- Configurable model parameters
+- Visual result presentation
 
 ## Installation
 
@@ -16,76 +29,87 @@ $ python -m venv venv
 $ source venv/bin/activate  # On Windows use `venv\Scripts\activate`
 ```
 
-3. Install the required dependencies:
+3. Install the backend dependencies:
 ```bash
 $ pip install -r requirements.txt
 ```
 
-## Usage
-
-1. Run the FastAPI application:
+4. Install the frontend dependencies:
 ```bash
-$ uvicorn main:app --reload
+$ pip install -r web/requirements_web.txt
 ```
 
-2. The API will be available at `http://localhost:8080`.
+## Usage
+
+1. Start the FastAPI backend:
+```bash
+$ uvicorn main:app --reload --port 8080
+```
+
+2. Launch the Streamlit interface:
+```bash
+$ cd web
+$ streamlit run frontend.py
+```
+
+3. Access the web interface at `http://localhost:8501`
 
 ## API Endpoints
 
-### POST /search/
+### POST /search_remote/
+Analyzes medical reports using a remote LLM service.
 
-Analyzes a medical report for predefined cancer-related patterns and keywords.
-
-#### Request Body
-
+#### Request Body:
 ```json
 {
-    "report": "Your medical report text here"
+    "report": "Your medical report text here",
+    "api_url": "http://your-llm-service-url",
+    "model_name": "llama-3.3-70b-instruct",
+    "temperature": 0.85,
+    "top_p": 0.3,
+    "max_tokens": 2000
 }
 ```
 
-#### Response
-
-Returns a list of matches for each predefined keyword found in the report:
-
+#### Response:
 ```json
 [
     {
-        "keyword": "liver metastasis",
-        "matches": [
-            "Patient shows signs of liver metastasis",
-            "Similar patterns suggesting liver involvement"
-        ],
-        "extracted_info": []
-    },
-    {
-        "keyword": "recurrent rectal cancer",
-        "matches": [
-            "Symptoms indicate recurrent rectal cancer"
-        ],
-        "extracted_info": []
+        "keyword": "keyword found",
+        "matches": "matching sentence from report"
     }
 ]
 ```
 
 ## Project Structure
-
 ```
 app/
-    __pycache__/
-    models.py     - Data models and request/response schemas
-    utils.py      - Core functionality and predefined keywords
-main.py          - FastAPI application and routes
-requirements.txt - Project dependencies
+    models.py      - Data models and request schemas
+    utils.py       - Core analysis functionality
+    config.py      - Model configuration
+    prompts.py     - LLM prompts
+web/
+    frontend.py    - Streamlit web interface
+    requirements_web.txt
+main.py           - FastAPI application
+requirements.txt   - Backend dependencies
 ```
 
-## Predefined Keywords
+## Features
+- Automatic keyword detection in medical reports
+- Support for both local and remote LLM processing
+- Interactive text highlighting
+- Configurable model parameters
+- Real-time analysis results
+- User-friendly web interface
 
+## Predefined Keywords
 The system automatically searches for patterns related to:
-- Metastasis (liver, lung, bone)
+- Cancer metastasis (liver, lung, bone)
 - Recurrent tumors
 - Cancer progression
 - Treatment responses
-- And more specific medical terminology
+- Medical terminology specific to cancer diagnosis
 
-No need to specify keywords in the request - the system uses a comprehensive set of predefined medical terms and patterns.
+## Note
+Make sure you have access to the LLM service (local or remote) before running the application. The system is configured to work with LLaMA models but can be adapted for other LLMs.
