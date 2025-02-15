@@ -126,10 +126,10 @@ if st.button("🔍 Analyze Report", type="primary", disabled=st.session_state.pr
                 status_text = st.empty()
                 
                 # 模擬進度
-                for i in range(100):
+                for i in range(400):
                     progress_bar.progress(i + 1)
                     status_text.text(f"Analysis in progress... {i+1}%")
-                    sleep(0.01)
+                    sleep(0.1)
             
             # 發送請求到 FastAPI search_remote 端點
             response = requests.post(
@@ -142,7 +142,7 @@ if st.button("🔍 Analyze Report", type="primary", disabled=st.session_state.pr
                     "top_p": top_p,
                     "max_tokens": max_tokens
                 },
-                timeout=30
+                timeout=180
             )
             
             if response.status_code == 200:
