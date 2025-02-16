@@ -1,28 +1,28 @@
-# Cancer Recurrence Analysis System
+# Cancer Report Analysis System
 
-This specialized system provides a comprehensive solution for analyzing medical reports to detect and evaluate cancer recurrence patterns using advanced language models.
+This system provides a comprehensive solution for analyzing text patterns and extracting relevant information using advanced language models.
 
 ## Overview
 
-This tool is designed to assist medical professionals in:
-- Detecting patterns of cancer recurrence
-- Identifying metastatic spread
-- Analyzing disease progression
-- Evaluating treatment responses
-- Monitoring post-surgical outcomes
+This tool is designed to assist in:
+- Detecting important patterns
+- Identifying key information
+- Analyzing textual content
+- Evaluating content relationships
+- Monitoring changes and trends
 
 ## Components
 
 ### 1. FastAPI Backend
-- Specialized API endpoints for cancer recurrence analysis
+- Specialized API endpoints for text analysis
 - Advanced pattern recognition using LLaMA model
-- Supports both local and remote processing for complex medical text analysis
+- Supports both local and remote processing
 
 ### 2. Streamlit Web Interface
-- Intuitive interface for oncology report analysis
-- Real-time highlighting of recurrence patterns
-- Interactive visualization of findings
-- Configurable analysis parameters
+- Intuitive interface for text analysis
+- Real-time highlighting of findings
+- Interactive visualization
+- Configurable parameters
 
 ## Installation
 
@@ -65,47 +65,46 @@ $ streamlit run frontend.py
 
 ## Key Features
 
-- **Pattern Recognition**: Automatically identifies patterns indicating cancer recurrence
-- **Metastasis Detection**: Highlights evidence of metastatic spread
-- **Progress Tracking**: Analyzes changes in tumor characteristics over time
-- **Treatment Response**: Evaluates responses to various therapeutic interventions
-- **Interactive Analysis**: Real-time visualization of findings with detailed annotations
+- **Pattern Recognition**: Automatically identifies important patterns
+- **Content Analysis**: Highlights relevant information
+- **Progress Tracking**: Analyzes changes over time
+- **Response Analysis**: Evaluates content relationships
+- **Interactive Analysis**: Real-time visualization with detailed annotations
 
 ## Analysis Categories
 
 The system focuses on detecting:
-1. **Local Recurrence Patterns**
-   - Post-surgical site recurrence
-   - Regional lymph node involvement
-   - Adjacent organ invasion
+1. **Key Patterns**
+   - Primary indicators
+   - Related elements
+   - Connected components
 
-2. **Distant Metastasis**
-   - Liver metastasis
-   - Lung metastasis
-   - Bone metastasis
-   - Other organ involvement
+2. **Information Relationships**
+   - Direct connections
+   - Indirect relationships
+   - Pattern associations
 
-3. **Disease Progression Indicators**
-   - Tumor size changes
-   - New lesion development
-   - Metastatic spread patterns
+3. **Progress Indicators**
+   - Change patterns
+   - Development indicators
+   - Trend analysis
 
-4. **Treatment Response Markers**
-   - Post-treatment changes
-   - Therapeutic effectiveness
-   - Residual disease assessment
+4. **Response Markers**
+   - Pattern changes
+   - Effect indicators
+   - Progress assessment
 
 ## Technical Details
 
 ### API Endpoints
 
 #### POST /search_remote/
-Analyzes oncology reports for recurrence patterns using remote LLM service.
+Analyzes text for patterns using remote LLM service.
 
 ##### Request Body:
 ```json
 {
-    "report": "Your oncology report text here",
+    "report": "Your text content here",
     "api_url": "http://your-llm-service-url",
     "model_name": "llama-3.3-70b-instruct",
     "temperature": 0.85,
@@ -118,8 +117,8 @@ Analyzes oncology reports for recurrence patterns using remote LLM service.
 ```json
 [
     {
-        "keyword": "recurrence pattern identified",
-        "matches": "matching text from report"
+        "keyword": "pattern identified",
+        "matches": "matching text from content"
     }
 ]
 ```
@@ -127,7 +126,7 @@ Analyzes oncology reports for recurrence patterns using remote LLM service.
 ## Project Structure
 ```
 app/
-    models.py      - Data models for cancer analysis
+    models.py      - Data models
     utils.py       - Core analysis algorithms
     config.py      - Model configuration
     prompts.py     - LLM analysis prompts
@@ -139,4 +138,4 @@ requirements.txt   - Backend dependencies
 ```
 
 ## Note
-This system requires access to a compatible LLM service. While configured for LLaMA models, it can be adapted for other medical-specific language models. Regular updates to the pattern recognition database are recommended to maintain analysis accuracy.
+This system requires access to a compatible LLM service. While configured for LLaMA models, it can be adapted for other language models. Regular updates to the pattern recognition database are recommended to maintain analysis accuracy.

@@ -1,12 +1,11 @@
-
 def get_keyword_extraction_prompt(keywords: list, report: str) -> str:
     return f"""
-        You are an information extraction system. Your task is to extract sentences that contain the specified keywords from the given report.
+        You are an information extraction system. Your task is to extract sentences that contain the specified keywords from the given text.
 
         ### Keywords:
         - {", ".join(keywords)}
 
-        ### Report:
+        ### Text for Analysis:
         ---------------------
         {report}
         ---------------------
@@ -14,7 +13,7 @@ def get_keyword_extraction_prompt(keywords: list, report: str) -> str:
         ### Matching Rules:
         - **Perform case-insensitive, partial phrase matching.**
         - **Extract the entire sentence that contains the keyword.**
-        - **Only include keywords that appear in the report.**
+        - **Only include keywords that appear in the text.**
         - **Do not include keywords with empty matches.**
         - **Only include the first matching sentence for each keyword.**
         - **matches must be a string, not a list.**
@@ -30,8 +29,8 @@ def get_keyword_extraction_prompt(keywords: list, report: str) -> str:
         ```
         [
             {{
-                "keyword": "[KeyWord]",
-                "matches": "[First matched sentence]"
+                "keyword": "[Identified Pattern]",
+                "matches": "[Full matching sentence]"
             }}
         ]
         ```

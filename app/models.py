@@ -2,50 +2,46 @@ from pydantic import BaseModel
 from typing import List
 
 class SearchRequest(BaseModel):
-    report: str = "Patient demonstrates local recurrence at the surgical site with evidence of liver metastasis."
+    report: str = "Sample text for pattern matching and analysis."
     
     class Config:
         schema_extra = {
             "example": {
-                "report": """Follow-up examination reveals recurrent adenocarcinoma at the primary site. 
-                          PET-CT shows multiple new hepatic lesions consistent with metastatic disease. 
-                          Additionally, enlarged para-aortic lymph nodes suggest lymphatic spread."""
+                "report": """This is a sample text that demonstrates the analysis capabilities. 
+                          The system will identify important patterns and key findings based on 
+                          the predefined criteria."""
             }
         }
 
 class SearchRequest_test_prompt(BaseModel):
     temperature: float = 0.85
     top_p: float = 0.3
-    prompt: str = """Analyze the oncology report for signs of cancer recurrence and metastasis. Return results in JSON format.
+    prompt: str = """Analyze the text for key patterns and findings. Return results in JSON format.
 
-        Key Patterns to Identify:
-        - Local recurrence patterns
-        - Metastatic spread (liver, lung, bone)
-        - Lymph node involvement
-        - Disease progression indicators
-        - Treatment response markers
+        Key Elements to Identify:
+        - Main patterns
+        - Important findings
+        - Key indicators
+        - Significant changes
+        - Notable elements
 
-        Report:
+        Text:
         {report_text}
 
         Respond with:
         [
             {
                 "keyword": "identified pattern",
-                "matches": "relevant text from report"
+                "matches": "relevant text from input"
             }
         ]
 
         Example Analysis:
-        Input: "Follow-up imaging shows recurrent tumor at surgical site with multiple new hepatic lesions."
+        Input: "The analysis reveals significant changes in the observed patterns."
         Output: [
             {
-                "keyword": "local recurrence",
-                "matches": "recurrent tumor at surgical site"
-            },
-            {
-                "keyword": "liver metastasis",
-                "matches": "multiple new hepatic lesions"
+                "keyword": "pattern change",
+                "matches": "significant changes in the observed patterns"
             }
         ]"""
 
@@ -64,10 +60,10 @@ class SearchRequest_remote(BaseModel):
     class Config:
         schema_extra = {
             "example": {
-                "report": """Post-treatment evaluation indicates recurrent disease:
-                          - Local recurrence at surgical margin
-                          - New metastatic foci in liver segments VI and VII
-                          - Progressive lymphadenopathy in para-aortic region""",
+                "report": """Analysis results show:
+                          - Primary findings in target area
+                          - New developments in observed regions
+                          - Progressive changes in key indicators""",
                 "api_url": "http://192.168.0.202:1234/v1/chat/completions",
                 "model_name": "llama-3.3-70b-instruct",
                 "temperature": 0.85,

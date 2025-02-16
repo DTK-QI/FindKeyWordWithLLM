@@ -9,88 +9,44 @@ import aiohttp
 from app.prompts import get_keyword_extraction_prompt
 warnings.filterwarnings('ignore')
 
-
-
-
-# 預定義癌症復發相關的關鍵詞
+# 預定義關鍵詞
 KEYWORDS = [
-    # "Colon cancer with bone metastasis"
-    # "liver metastasis; lung metastasis",
-    # "liver and lung metastases",
-    # "peritoneal tumor seeding",
-    # "Consider local recurrent tumor involving left seminal vesicle and rectum",
-    # "Consider residual/recurrent tumor at the rectal region abutting the seminal vesicle",
-    # "Consider residual/recurrent tumor with peri-rectal invasion",
-    # "Enlarged change in size of the peritoneal seeding tumor at left peritoneal space with invasion to proximal small bowel and proximal descending colon",
-    # "Favor recurrent rectal cancer",
-    # "Favoring metastasis from colon cecum cancer",
-    # "Interval rectal cancer post surgery with clips. A tiny FDG avidity in the presacrum, DDx metastasis lymph nodes",
-    # "Lung, middle lobe, right, frozen section, adenocarcinoma, favor metastatic colon cancer",
-    # "Metastatic adenocarcinoma of colon origin",
-    # "Metastatic carcinoma of colonic origin",
-    # "Metastatic carcinoma of colorectal origin",
-    # "Metastatic lymphadenopathies in the pericolonic region",
-    # "Metastatic, colorectal origin",
-    # "Rectal (cancer) adenocarcinoma with liver metastasis, rcT2N0M1a; liver, lung metastases, rycT2N0M1c; with para-aortic lymph node metastasis",
-    # "Rectal mucinous adenocarcinoma with para-aortic lymph node metastasis",
-    # "Rectosigmoid colon adenocarcinoma with liver metastasis, rcT0N0M1a",
-    # "Recurrent colon Ca; ca",
-    # "Sigmoid colon cancer with recurrence",
-    # "Recurrent rectal cancer",
-    # "Suspect recurrent tumor at the perirectal and presacral region",
-    # "The feature suggests metastatic adenocarcinoma from rectocolonic origin",
-    # "Under chemotherapy (FOLFIRI) to abdomen lesion (Ascending colon adenocarcinoma, rycT0N0M1c, STAGE: IVC)"
-
-
-
-    # 局部復發模式
-    "local recurrence at surgical site",
-    "tumor recurrence at primary site",
-    "recurrent disease at surgical margin",
-    "local tumor progression",
-    "residual tumor at surgical bed",
+    # 主要模式
+    "significant pattern",
+    "key finding",
+    "important observation",
+    "notable change",
+    "critical development",
     
-    # 淋巴結轉移
-    "lymph node metastasis",
-    "lymphatic spread",
-    "metastatic lymphadenopathy",
-    "regional lymph node involvement",
-    "progressive lymphadenopathy",
+    # 關聯性
+    "related to",
+    "associated with",
+    "connected to",
+    "linked with",
+    "correlation between",
     
-    # 器官轉移
-    "liver metastasis",
-    "hepatic metastases",
-    "lung metastasis",
-    "pulmonary metastases",
-    "bone metastasis",
-    "skeletal metastases",
-    "brain metastasis",
-    "peritoneal metastasis",
+    # 變化指標
+    "progressive change",
+    "gradual development",
+    "increasing trend",
+    "decreasing pattern",
+    "stable condition",
     
-    # 疾病進展指標
-    "disease progression",
-    "tumor progression",
-    "metastatic spread",
-    "increasing tumor burden",
-    "new metastatic lesions",
+    # 發展趨勢
+    "development trend",
+    "pattern evolution",
+    "changing dynamics",
+    "progress indication",
+    "trend analysis",
     
-    # 治療反應
-    "treatment resistant disease",
-    "progressive disease despite therapy",
-    "recurrence after treatment",
-    "post-therapy progression",
-    "treatment failure",
-    
-    # 特定癌症復發模式
-    "recurrent colorectal cancer",
-    "recurrent breast cancer",
-    "recurrent lung cancer",
-    "recurrent gastric cancer",
-    "recurrent pancreatic cancer"
+    # 狀態描述
+    "current status",
+    "present condition",
+    "ongoing situation",
+    "existing state",
+    "dynamic process"
 ]
 
-    
-    
 async def search_report_test_prompt(request: SearchRequest_test_prompt) -> List[SearchResult]:
 
     try:
@@ -104,7 +60,7 @@ async def search_report_test_prompt(request: SearchRequest_test_prompt) -> List[
             else:
                 # 如果沒有 code block，從後面找最後一組 JSON 陣列
                 last_close_bracket = response.rfind(']')
-                if last_close_bracket != -1:
+                if (last_close_bracket != -1):
                     # 從最後一個 ] 往前找對應的 [
                     temp_response = response[:last_close_bracket]
                     last_open_bracket = temp_response.rfind('[')

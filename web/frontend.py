@@ -13,22 +13,22 @@ def init_session_state():
     if 'text_input' not in st.session_state:
         st.session_state.text_input = ""
 
-EXAMPLE_TEXT = """The patient presents with a clinical history concerning for suspected cancer recurrence. Recent follow-up imaging with PET-CT has identified multiple new hepatic lesions, raising strong suspicion of liver metastasis originating from previously diagnosed colon cancer. In addition, multiple enlarged lymph nodes have been observed in the pericolonic region, which may indicate lymphatic spread of the malignancy.
-Further evaluation of the previous surgical site reveals evidence of local recurrence, with significant invasion into adjacent anatomical structures, suggesting aggressive disease behavior. These findings are consistent with disease progression, demonstrating metastatic involvement in multiple organ systems.
-Given the extent of the newly identified lesions and the pattern of dissemination, further oncological assessment is warranted. A multidisciplinary team approach, including oncologists, radiologists, and surgical specialists, will be necessary to determine the best course of action. Potential treatment options may include systemic chemotherapy, targeted therapy, or localized interventions such as radiofrequency ablation for hepatic lesions.
-Close monitoring and additional imaging studies, including contrast-enhanced MRI or further PET-CT evaluations, may be required to assess the full extent of metastatic disease. Given the complexity of the case, a reassessment of the patient’s overall prognosis and treatment strategy is crucial to optimize therapeutic outcomes while maintaining the best possible quality of life."""
+EXAMPLE_TEXT = """The latest analysis reveals significant patterns in the observed data. Multiple key findings indicate important developments in various areas. The current trends show progressive changes, with notable relationships between different components.
+Further evaluation demonstrates critical patterns that suggest substantial evolution in the system's behavior. These findings are consistent with the expected development trajectory, showing multiple interconnected elements.
+Given the extent of the newly identified patterns and their distribution, additional assessment is warranted. A comprehensive approach, including multiple analytical methods, will be necessary to determine the optimal strategy.
+Continuous monitoring and additional analysis may be required to assess the full scope of the developments. Given the complexity of the patterns, a reassessment of the overall situation and strategy is recommended to optimize outcomes."""
 
 HELP_TEXT = """
 #### 🔍 How to Use:
-1. Enter your medical report text in the input box
-2. Click 'Load Example' to see a sample cancer recurrence report
+1. Enter your text in the input box
+2. Click 'Load Example' to see a sample analysis
 3. Adjust model settings in the sidebar if needed
-4. Click 'Analyze Report' to detect patterns of cancer recurrence
+4. Click 'Analyze Text' to detect patterns
 """
 
 # CSS and page setup
 st.set_page_config(
-    page_title="Cancer Report Analysis",
+    page_title="Pattern Analysis System",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -264,27 +264,27 @@ with st.sidebar:
         )
 
 # Main content
-st.title("🔬 Cancer Recurrence Analysis")
+st.title("🔍 Pattern Analysis System")
 
 with st.container():
     st.info(
-        "This specialized tool analyzes medical reports to identify patterns of cancer recurrence, "
-        "metastatic spread, and disease progression. Enter your report text below or use "
-        "the provided example case."
+        "This specialized tool analyzes text to identify important patterns, "
+        "relationships, and trends. Enter your text below or use "
+        "the provided example."
     )
 
 # Text input area
 col1, col2 = st.columns([4, 1])
 with col1:
     text_input = st.text_area(
-        "Enter your oncology report:",
+        "Enter your text:",
         value=st.session_state.text_input,
         height=200,
-        placeholder="Enter the medical report text for cancer recurrence analysis...",
-        help="Paste your oncology report text here for analysis of recurrence patterns"
+        placeholder="Enter your text for pattern analysis...",
+        help="Paste your text here for comprehensive pattern analysis"
     )
 with col2:
-    st.markdown("<div style='height: 30px'></div>", unsafe_allow_html=True)  # 添加間距
+    st.markdown("<div style='height: 30px'></div>", unsafe_allow_html=True)
     if st.button("📝 Load Example", use_container_width=True):
         st.session_state.text_input = EXAMPLE_TEXT
         st.rerun()
@@ -293,7 +293,7 @@ with col2:
 col1, col2, col3 = st.columns([2, 2, 2])
 with col2:
     analyze_button = st.button(
-        "🔍 Analyze Report",
+        "🔍 Analyze Text",
         type="primary",
         disabled=st.session_state.processing,
         use_container_width=True
@@ -303,26 +303,26 @@ with col2:
 loading_container = st.empty()
 status_container = st.empty()
 
-# 處理分析按鈕點擊
+# Handle analysis button click
 if analyze_button:
     if text_input:
         try:
             st.session_state.processing = True
             st.session_state.analysis_complete = False
             
-            # 顯示加載動畫和狀態
+            # Show loading animation
             with loading_container:
                 st.markdown("""
                     <div class="loading-container centered-spinner">
                         <div class="loading-spinner"></div>
                         <div class="loading-text">
-                            Analyzing medical report...
+                            Analyzing text...
                             <div class="status-badge status-processing">Processing</div>
                         </div>
                     </div>
                 """, unsafe_allow_html=True)
             
-            # API 請求
+            # API request
             response = requests.post(
                 "http://localhost:8080/search_remote",
                 json={
@@ -341,23 +341,23 @@ if analyze_button:
                 st.session_state.results = results
                 st.session_state.analysis_complete = True
                 
-                # 清除加載動畫
+                # Clear loading animation
                 loading_container.empty()
                 
-                # 顯示完成狀態
+                # Show completion status
                 status_container.markdown("""
                     <div class="status-message success">
                         ✓ Analysis completed successfully
                     </div>
                 """, unsafe_allow_html=True)
                 
-                # 顯示結果
+                # Show results
                 if not results:
-                    st.warning("No matches found in the provided text.")
+                    st.warning("No patterns found in the provided text.")
                 else:
                     st.markdown("### 📊 Analysis Results")
                     
-                    # 顯示標註文本
+                    # Show annotated text
                     with st.container():
                         text = text_input
                         annotations = []
@@ -365,7 +365,7 @@ if analyze_button:
                         
                         st.markdown(
                             f"""<div class="status-message info">
-                                📌 Found {total_matches} relevant matches in the text
+                                📌 Found {total_matches} relevant patterns in the text
                             </div>""",
                             unsafe_allow_html=True
                         )
@@ -378,22 +378,22 @@ if analyze_button:
                                 parts = text.split(match)
                                 if parts[0]:
                                     annotations.append(parts[0])
-                                annotations.append((match, f"🔍 {keyword}", "rgb(255, 122, 0)"))  # 改變這裡的顏色
+                                annotations.append((match, f"🔍 {keyword}", "rgb(255, 122, 0)"))
                                 text = "".join(parts[1:])
                         
                         if text:
                             annotations.append(text)
                         
-                        # 顯示標註
-                        with st.expander("📄 View Annotated Report", expanded=True):
+                        # Show annotations
+                        with st.expander("📄 View Annotated Text", expanded=True):
                             if annotations:
                                 annotated_text(*annotations)
                         
-                        # 顯示詳細結果
+                        # Show detailed findings
                         st.markdown("### 🔍 Detailed Findings")
                         for idx, result in enumerate(results, 1):
                             with st.expander(
-                                f"""Finding {idx}: {result.get('keyword', '')}""",
+                                f"""Pattern {idx}: {result.get('keyword', '')}""",
                                 expanded=False
                             ):
                                 st.markdown(
@@ -428,7 +428,7 @@ if analyze_button:
     else:
         st.warning("⚠️ Please enter some text to analyze or use the example provided.")
 
-# 重置按鈕
+# Reset button
 if st.session_state.results or st.session_state.text_input:
     col1, col2, col3 = st.columns([2, 2, 2])
     with col2:
