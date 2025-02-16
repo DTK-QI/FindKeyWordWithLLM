@@ -1,5 +1,5 @@
 from fastapi import HTTPException
-from app.models import SearchRequest, SearchRequest_remote, SearchResult,SearchRequest_test_prompt
+from app.models import SearchRequest, SearchRequest_remote, SearchResult, SearchRequest_test_prompt
 from app.config import model_config
 from typing import List
 import warnings
@@ -9,26 +9,84 @@ import aiohttp
 from app.prompts import get_keyword_extraction_prompt
 warnings.filterwarnings('ignore')
 
-# Predefined keywords for cancer report analysis
+
+
+
+# 預定義癌症復發相關的關鍵詞
 KEYWORDS = [
-    "Colon cancer with bone metastasis", "liver metastasis", "lung metastasis", 
-    "liver and lung metastases", "peritoneal tumor seeding",
-    "Consider local recurrent tumor involving left seminal vesicle and rectum", 
-    "Consider residual/recurrent tumor at the rectal region abutting the seminal vesicle",
-    "Consider residual/recurrent tumor with peri-rectal invasion", 
-    "Enlarged change in size of the peritoneal seeding tumor",
-    "Favor recurrent rectal cancer", "Favoring metastasis from colon cecum cancer",
-    "Metastatic adenocarcinoma of colon origin",
-    "Metastatic carcinoma of colonic origin",
-    "Metastatic carcinoma of colorectal origin",
-    "Metastatic lymphadenopathies in the pericolonic region",
-    "Rectal cancer adenocarcinoma with liver metastasis",
-    "Rectal mucinous adenocarcinoma",
-    "Rectosigmoid colon adenocarcinoma",
-    "Recurrent colon cancer",
-    "Sigmoid colon cancer with recurrence",
-    "Recurrent rectal cancer",
-    "Suspect recurrent tumor"
+    # "Colon cancer with bone metastasis"
+    # "liver metastasis; lung metastasis",
+    # "liver and lung metastases",
+    # "peritoneal tumor seeding",
+    # "Consider local recurrent tumor involving left seminal vesicle and rectum",
+    # "Consider residual/recurrent tumor at the rectal region abutting the seminal vesicle",
+    # "Consider residual/recurrent tumor with peri-rectal invasion",
+    # "Enlarged change in size of the peritoneal seeding tumor at left peritoneal space with invasion to proximal small bowel and proximal descending colon",
+    # "Favor recurrent rectal cancer",
+    # "Favoring metastasis from colon cecum cancer",
+    # "Interval rectal cancer post surgery with clips. A tiny FDG avidity in the presacrum, DDx metastasis lymph nodes",
+    # "Lung, middle lobe, right, frozen section, adenocarcinoma, favor metastatic colon cancer",
+    # "Metastatic adenocarcinoma of colon origin",
+    # "Metastatic carcinoma of colonic origin",
+    # "Metastatic carcinoma of colorectal origin",
+    # "Metastatic lymphadenopathies in the pericolonic region",
+    # "Metastatic, colorectal origin",
+    # "Rectal (cancer) adenocarcinoma with liver metastasis, rcT2N0M1a; liver, lung metastases, rycT2N0M1c; with para-aortic lymph node metastasis",
+    # "Rectal mucinous adenocarcinoma with para-aortic lymph node metastasis",
+    # "Rectosigmoid colon adenocarcinoma with liver metastasis, rcT0N0M1a",
+    # "Recurrent colon Ca; ca",
+    # "Sigmoid colon cancer with recurrence",
+    # "Recurrent rectal cancer",
+    # "Suspect recurrent tumor at the perirectal and presacral region",
+    # "The feature suggests metastatic adenocarcinoma from rectocolonic origin",
+    # "Under chemotherapy (FOLFIRI) to abdomen lesion (Ascending colon adenocarcinoma, rycT0N0M1c, STAGE: IVC)"
+
+
+
+    # 局部復發模式
+    "local recurrence at surgical site",
+    "tumor recurrence at primary site",
+    "recurrent disease at surgical margin",
+    "local tumor progression",
+    "residual tumor at surgical bed",
+    
+    # 淋巴結轉移
+    "lymph node metastasis",
+    "lymphatic spread",
+    "metastatic lymphadenopathy",
+    "regional lymph node involvement",
+    "progressive lymphadenopathy",
+    
+    # 器官轉移
+    "liver metastasis",
+    "hepatic metastases",
+    "lung metastasis",
+    "pulmonary metastases",
+    "bone metastasis",
+    "skeletal metastases",
+    "brain metastasis",
+    "peritoneal metastasis",
+    
+    # 疾病進展指標
+    "disease progression",
+    "tumor progression",
+    "metastatic spread",
+    "increasing tumor burden",
+    "new metastatic lesions",
+    
+    # 治療反應
+    "treatment resistant disease",
+    "progressive disease despite therapy",
+    "recurrence after treatment",
+    "post-therapy progression",
+    "treatment failure",
+    
+    # 特定癌症復發模式
+    "recurrent colorectal cancer",
+    "recurrent breast cancer",
+    "recurrent lung cancer",
+    "recurrent gastric cancer",
+    "recurrent pancreatic cancer"
 ]
 
     
