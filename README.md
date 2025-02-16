@@ -1,4 +1,4 @@
-# Cancer Report Analysis System
+# Pattern Analysis System
 
 This system provides a comprehensive solution for analyzing text patterns and extracting relevant information using advanced language models.
 
