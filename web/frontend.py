@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 from annotated_text import annotated_text
 import time
+import html
 
 def init_session_state():
     if 'processing' not in st.session_state:
@@ -142,6 +143,7 @@ st.markdown("""
         padding: 20px;
         border-radius: 8px;
         background: #5e5e95;
+        color: #ffffff;
         box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         animation: fadeIn 0.5s ease-in-out;
     }
@@ -446,9 +448,11 @@ if analyze_button:
                                 f"""Pattern {idx}: {result.get('keyword', '')}""",
                                 expanded=False
                             ):
+                                # 轉義 HTML 特殊字符，避免出現未關閉的標籤
+                                match_text = html.escape(result.get('matches', 'No match found'))
                                 st.markdown(
                                     f"""<div class="result-container">
-                                        {result.get('matches', 'No match found')}
+                                        {match_text}
                                     </div>""",
                                     unsafe_allow_html=True
                                 )
