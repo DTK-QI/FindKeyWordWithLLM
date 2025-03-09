@@ -19,13 +19,15 @@ def init_session_state():
 
 def fetch_available_models(api_url):
     try:
-        # 從URL中移除chat/completions部分來構建正確的模型列表請求URL
-        base_url = "/".join(api_url.split("/")[:3])  # 只取http://IP:PORT部分
-        response = requests.get(f"{base_url}/v1/models")
+        # Call the local API's /model/list endpoint with the api_url as a parameter
+        response = requests.get(
+            "http://localhost:8080/model/list",
+            params={"api_url": f"{api_url}"}
+        )
         if response.status_code == 200:
-            models = response.json()
-            model_ids = [model["id"] for model in models.get("data", [])]
-            return model_ids if model_ids else [""]
+            data = response.json()
+            models = data.get("models")
+            return models if models else [""]
         return [""]
     except Exception as e:
         print(f"Error fetching models: {str(e)}")
@@ -275,10 +277,9 @@ with st.sidebar:
         )
 
         # 當API URL改變時重新獲取模型列表
-        full_api_url = f"http://{api_url}/v1/chat/completions"
-        if 'last_api_url' not in st.session_state or st.session_state.last_api_url != full_api_url:
-            st.session_state.available_models = fetch_available_models(full_api_url)
-            st.session_state.last_api_url = full_api_url
+        if 'last_api_url' not in st.session_state or st.session_state.last_api_url != api_url:
+            st.session_state.available_models = fetch_available_models(api_url)
+            st.session_state.last_api_url = api_url
         
         model_name = st.selectbox(
             "Model:",

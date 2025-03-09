@@ -47,7 +47,7 @@ async def search_remote(request: SearchRequest_remote):
 async def get_models(api_url: str = Query(..., description="LM Studio API URL")):
     try:
         # 向LM Studio API發送請求獲取模型列表
-        response = requests.get(f"{api_url}/v1/models")
+        response = requests.get(f"http://{api_url}/v1/models")
         if response.status_code == 200:
             data = response.json()
             # LM Studio API返回的模型列表格式可能需要轉換
