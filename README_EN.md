@@ -7,6 +7,8 @@
 <img src="https://img.shields.io/badge/license-MIT-green" alt="License">
 </div>
 
+![image](Demo.png)
+
 This is a system that uses large language models to find keywords in text, with both frontend and API interfaces. This system provides a comprehensive solution for analyzing text patterns and extracting relevant information using advanced language models.
 
 [中文版本](README.md)
