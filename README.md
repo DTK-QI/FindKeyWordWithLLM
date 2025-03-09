@@ -7,7 +7,7 @@
   <img src="https://img.shields.io/badge/license-MIT-green" alt="License">
 </div>
 
-本系統提供了一套綜合解決方案，利用先進的語言模型分析文本模式並提取相關信息。
+這是一個利用大語言模型在文本中尋找關鍵字詞的系統，擁有前端及API介面。本系統提供了一套綜合解決方案，利用先進的語言模型分析文本模式並提取相關信息。
 
 [English Version](README_EN.md)
 
@@ -95,6 +95,9 @@ $ streamlit run frontend.py
 ## 技術細節 (Technical Details)
 
 ### API 端點
+
+#### POST /search/
+使用本地LLM模型分析文本中的模式。
 
 #### POST /search_remote/
 使用遠程LLM服務分析文本中的模式。
