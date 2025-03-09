@@ -1,5 +1,12 @@
 # Pattern Analysis System
 
+<div align="center">
+  <img src="https://img.shields.io/badge/platform-ASP.NET%20Core%208.0-blue" alt="Platform">
+  <img src="https://img.shields.io/badge/language-C%23-brightgreen" alt="Language">
+  <img src="https://img.shields.io/badge/database-SQL%20Server-red" alt="Database">
+  <img src="https://img.shields.io/badge/license-MIT-green" alt="License">
+</div>
+
 This system provides a comprehensive solution for analyzing text patterns and extracting relevant information using advanced language models.
 
 [中文版本](README.md)
@@ -69,7 +76,6 @@ $ streamlit run frontend.py
 
 - **Pattern Recognition**: Automatically identifies important patterns
 - **Content Analysis**: Highlights relevant information
-- **Progress Tracking**: Analyzes changes over time
 - **Response Analysis**: Evaluates content relationships
 - **Interactive Analysis**: Real-time visualization with detailed annotations
 
@@ -85,16 +91,6 @@ The system focuses on detecting:
    - Direct connections
    - Indirect relationships
    - Pattern associations
-
-3. **Progress Indicators**
-   - Change patterns
-   - Development indicators
-   - Trend analysis
-
-4. **Response Markers**
-   - Pattern changes
-   - Effect indicators
-   - Progress assessment
 
 ## Technical Details
 
