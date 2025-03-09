@@ -12,6 +12,24 @@ def init_session_state():
         st.session_state.analysis_complete = False
     if 'text_input' not in st.session_state:
         st.session_state.text_input = ""
+    if 'available_models' not in st.session_state:
+        st.session_state.available_models = []
+    if 'use_local_model' not in st.session_state:
+        st.session_state.use_local_model = False
+
+def fetch_available_models(api_url):
+    try:
+        # 從URL中移除chat/completions部分來構建正確的模型列表請求URL
+        base_url = "/".join(api_url.split("/")[:3])  # 只取http://IP:PORT部分
+        response = requests.get(f"{base_url}/v1/models")
+        if response.status_code == 200:
+            models = response.json()
+            model_ids = [model["id"] for model in models.get("data", [])]
+            return model_ids if model_ids else [""]
+        return [""]
+    except Exception as e:
+        print(f"Error fetching models: {str(e)}")
+        return [""]
 
 EXAMPLE_TEXT = """The latest analysis reveals significant patterns in the observed data. Multiple key findings indicate important developments in various areas. The current trends show progressive changes, with notable relationships between different components.
 Further evaluation demonstrates critical patterns that suggest substantial evolution in the system's behavior. These findings are consistent with the expected development trajectory, showing multiple interconnected elements.
@@ -35,6 +53,7 @@ st.set_page_config(
 
 init_session_state()
 
+# More harmonious color scheme with subtle white-gray variations
 st.markdown("""
 <style>
     .stTextInput > div > div > input {
@@ -223,6 +242,10 @@ st.markdown("""
         background-color: #52292f;
         border-left: 4px solid #f44336;
     }
+            
+    .error{
+            color:rgb(163 164 171);
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -234,34 +257,51 @@ with st.sidebar:
     with st.expander("ℹ️ Help"):
         st.markdown(HELP_TEXT)
     
-    api_url = st.text_input(
-        "Remote API URL:",
-        value="http://192.168.0.202:1234/v1/chat/completions",
-        help="Enter the URL of your LLM API service"
+    # Model selection type (local or remote)
+    model_option = st.radio(
+        "Model Location:",
+        ["Remote Model", "Local Model"],
+        index=0 if not st.session_state.use_local_model else 1,
+        help="Choose whether to use a remote API or local model"
     )
     
-    model_name = st.selectbox(
-        "Model:",
-        ["llama-3.3-70b-instruct"],
-        help="Select the model to use for analysis"
-    )
+    st.session_state.use_local_model = model_option == "Local Model"
     
-    with st.expander("Advanced Settings"):
-        temperature = st.slider(
-            "Temperature:",
-            0.0, 1.0, 0.85,
-            help="Higher values make the output more random"
+    if not st.session_state.use_local_model:
+        api_url = st.text_input(
+            "Remote API IP:Port",
+            value="192.168.0.202:1234",
+            help="Enter the IP and port of your LLM API service (e.g., 192.168.0.202:1234)"
         )
-        top_p = st.slider(
-            "Top P:",
-            0.0, 1.0, 0.3,
-            help="Controls diversity of the output"
+
+        # 當API URL改變時重新獲取模型列表
+        full_api_url = f"http://{api_url}/v1/chat/completions"
+        if 'last_api_url' not in st.session_state or st.session_state.last_api_url != full_api_url:
+            st.session_state.available_models = fetch_available_models(full_api_url)
+            st.session_state.last_api_url = full_api_url
+        
+        model_name = st.selectbox(
+            "Model:",
+            st.session_state.available_models,
+            help="Select the model to use for analysis"
         )
-        max_tokens = st.number_input(
-            "Max Tokens:",
-            100, 4000, 2000,
-            help="Maximum number of tokens to generate"
-        )
+        
+        with st.expander("Advanced Settings"):
+            temperature = st.slider(
+                "Temperature:",
+                0.0, 1.0, 0.85,
+                help="Higher values make the output more random"
+            )
+            top_p = st.slider(
+                "Top P:",
+                0.0, 1.0, 0.3,
+                help="Controls diversity of the output"
+            )
+            max_tokens = st.number_input(
+                "Max Tokens:",
+                100, 4000, 2000,
+                help="Maximum number of tokens to generate"
+            )
 
 # Main content
 st.title("🔍 Pattern Analysis System")
@@ -323,18 +363,27 @@ if analyze_button:
                 """, unsafe_allow_html=True)
             
             # API request
-            response = requests.post(
-                "http://localhost:8080/search_remote",
-                json={
-                    "report": text_input,
-                    "api_url": api_url,
-                    "model_name": model_name,
-                    "temperature": temperature,
-                    "top_p": top_p,
-                    "max_tokens": max_tokens
-                },
-                timeout=180
-            )
+            if st.session_state.use_local_model:
+                # Call local API endpoint
+                response = requests.post(
+                    "http://localhost:8080/search",
+                    json={"report": text_input},
+                    timeout=180
+                )
+            else:
+                # Call remote API endpoint
+                response = requests.post(
+                    "http://localhost:8080/search_remote",
+                    json={
+                        "report": text_input,
+                        "api_url": f"http://{api_url}/v1/chat/completions",
+                        "model_name": model_name,
+                        "temperature": temperature,
+                        "top_p": top_p,
+                        "max_tokens": max_tokens
+                    },
+                    timeout=180
+                )
             
             if response.status_code == 200:
                 results = response.json()

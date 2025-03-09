@@ -3,10 +3,17 @@ __pycache__/
 *.py[cod]
 *$py.class
 
-web/__pycache__/
-web/*.py[cod]
-app/__pycache__
-app/*.py[cod]
+# App and Web specific ignores
+app/**/__pycache__/
+app/**/*.py[cod]
+web/**/__pycache__/
+web/**/*.py[cod]
+
+.web/__pycache__/
+.web/*.py[cod]
+
+.app/__pycache__/
+.app/*.py[cod]
 
 # C extensions
 *.so
