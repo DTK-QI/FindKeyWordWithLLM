@@ -1,10 +1,10 @@
 # Pattern Analysis System
 
 <div align="center">
-  <img src="https://img.shields.io/badge/platform-ASP.NET%20Core%208.0-blue" alt="Platform">
-  <img src="https://img.shields.io/badge/language-C%23-brightgreen" alt="Language">
-  <img src="https://img.shields.io/badge/database-SQL%20Server-red" alt="Database">
-  <img src="https://img.shields.io/badge/license-MIT-green" alt="License">
+<img src="https://img.shields.io/badge/platform-Python%203.10-blue" alt="Platform">
+<img src="https://img.shields.io/badge/language-Python-brightgreen" alt="Language">
+<img src="https://img.shields.io/badge/framework-FastAPI%2BStreamlit-orange" alt="Framework">
+<img src="https://img.shields.io/badge/license-MIT-green" alt="License">
 </div>
 
 This is a system that uses large language models to find keywords in text, with both frontend and API interfaces. This system provides a comprehensive solution for analyzing text patterns and extracting relevant information using advanced language models.

@@ -1,10 +1,10 @@
 # 模式分析系統 (Pattern Analysis System)
 
 <div align="center">
-  <img src="https://img.shields.io/badge/platform-ASP.NET%20Core%208.0-blue" alt="Platform">
-  <img src="https://img.shields.io/badge/language-C%23-brightgreen" alt="Language">
-  <img src="https://img.shields.io/badge/database-SQL%20Server-red" alt="Database">
-  <img src="https://img.shields.io/badge/license-MIT-green" alt="License">
+<img src="https://img.shields.io/badge/platform-Python%203.10-blue" alt="Platform">
+<img src="https://img.shields.io/badge/language-Python-brightgreen" alt="Language">
+<img src="https://img.shields.io/badge/framework-FastAPI%2BStreamlit-orange" alt="Framework">
+<img src="https://img.shields.io/badge/license-MIT-green" alt="License">
 </div>
 
 這是一個利用大語言模型在文本中尋找關鍵字詞的系統，擁有前端及API介面。本系統提供了一套綜合解決方案，利用先進的語言模型分析文本模式並提取相關信息。
