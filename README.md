@@ -1,110 +1,112 @@
-# Pattern Analysis System
+# 模式分析系统 (Pattern Analysis System)
 
-This system provides a comprehensive solution for analyzing text patterns and extracting relevant information using advanced language models.
+本系统提供了一套综合解决方案，利用先进的语言模型分析文本模式并提取相关信息。
 
-## Overview
+[English Version](README_EN.md)
 
-This tool is designed to assist in:
-- Detecting important patterns
-- Identifying key information
-- Analyzing textual content
-- Evaluating content relationships
-- Monitoring changes and trends
+## 概述 (Overview)
 
-## Components
+该工具旨在帮助：
+- 检测重要模式
+- 识别关键信息
+- 分析文本内容
+- 评估内容关系
+- 监控变化和趋势
 
-### 1. FastAPI Backend
-- Specialized API endpoints for text analysis
-- Advanced pattern recognition using LLaMA model
-- Supports both local and remote processing
+## 系统组件 (Components)
 
-### 2. Streamlit Web Interface
-- Intuitive interface for text analysis
-- Real-time highlighting of findings
-- Interactive visualization
-- Configurable parameters
+### 1. FastAPI 后端 (Backend)
+- 专用于文本分析的API端点
+- 使用LLaMA模型的高级模式识别
+- 支持本地和远程处理
 
-## Installation
+### 2. Streamlit 网页界面 (Web Interface)
+- 文本分析的直观界面
+- 实时高亮显示发现结果
+- 交互式可视化
+- 可配置参数
 
-1. Clone the repository:
+## 安装方法 (Installation)
+
+1. 克隆仓库:
 ```bash
 $ git clone <repository_url>
 $ cd <repository_directory>
 ```
 
-2. Create a virtual environment and activate it:
+2. 创建并激活虚拟环境:
 ```bash
 $ python -m venv venv
-$ source venv/bin/activate  # On Windows use `venv\Scripts\activate`
+$ source venv/bin/activate  # Windows系统使用 `venv\Scripts\activate`
 ```
 
-3. Install the backend dependencies:
+3. 安装后端依赖:
 ```bash
 $ pip install -r requirements.txt
 ```
 
-4. Install the frontend dependencies:
+4. 安装前端依赖:
 ```bash
 $ pip install -r web/requirements_web.txt
 ```
 
-## Usage
+## 使用方法 (Usage)
 
-1. Start the FastAPI backend:
+1. 启动FastAPI后端:
 ```bash
 $ uvicorn main:app --reload --port 8080
 ```
 
-2. Launch the Streamlit interface:
+2. 启动Streamlit界面:
 ```bash
 $ cd web
 $ streamlit run frontend.py
 ```
 
-3. Access the web interface at `http://localhost:8501`
+3. 在浏览器中访问 `http://localhost:8501`
 
-## Key Features
+## 核心功能 (Key Features)
 
-- **Pattern Recognition**: Automatically identifies important patterns
-- **Content Analysis**: Highlights relevant information
-- **Progress Tracking**: Analyzes changes over time
-- **Response Analysis**: Evaluates content relationships
-- **Interactive Analysis**: Real-time visualization with detailed annotations
+- **模式识别 (Pattern Recognition)**: 自动识别重要模式
+- **内容分析 (Content Analysis)**: 突出显示相关信息
+- **进度跟踪 (Progress Tracking)**: 分析随时间变化的情况
+- **响应分析 (Response Analysis)**: 评估内容关系
+- **交互式分析 (Interactive Analysis)**: 带有详细注释的实时可视化
 
-## Analysis Categories
+## 分析类别 (Analysis Categories)
 
-The system focuses on detecting:
-1. **Key Patterns**
-   - Primary indicators
-   - Related elements
-   - Connected components
+系统专注于检测:
+1. **关键模式 (Key Patterns)**
+   - 主要指标
+   - 相关元素
+   - 连接组件
 
-2. **Information Relationships**
-   - Direct connections
-   - Indirect relationships
-   - Pattern associations
+2. **信息关系 (Information Relationships)**
+   - 直接连接
+   - 间接关系
+   - 模式关联
 
-3. **Progress Indicators**
-   - Change patterns
-   - Development indicators
-   - Trend analysis
+3. **进度指标 (Progress Indicators)**
+   - 变化模式
+   - 发展指标
+   - 趋势分析
 
-4. **Response Markers**
-   - Pattern changes
-   - Effect indicators
-   - Progress assessment
+4. **响应标记 (Response Markers)**
+   - 模式变化
+   - 效果指标
+   - 进度评估
 
-## Technical Details
+## 技术细节 (Technical Details)
 
-### API Endpoints
+### API 端点
 
 #### POST /search_remote/
-Analyzes text for patterns using remote LLM service.
+使用远程LLM服务分析文本中的模式。
 
-##### Request Body:
+##### 请求体:
 ```json
 {
-    "report": "Your text content here",
+    "report": "您的文本内容",
     "api_url": "http://your-llm-service-url",
     "model_name": "llama-3.3-70b-instruct",
     "temperature": 0.85,
@@ -113,29 +115,29 @@ Analyzes text for patterns using remote LLM service.
 }
 ```
 
-##### Response:
+##### 响应:
 ```json
 [
     {
-        "keyword": "pattern identified",
-        "matches": "matching text from content"
+        "keyword": "识别出的模式",
+        "matches": "内容中匹配的文本"
     }
 ]
 ```
 
-## Project Structure
+## 项目结构 (Project Structure)
 ```
 app/
-    models.py      - Data models
-    utils.py       - Core analysis algorithms
-    config.py      - Model configuration
-    prompts.py     - LLM analysis prompts
+    models.py      - 数据模型
+    utils.py       - 核心分析算法
+    config.py      - 模型配置
+    prompts.py     - LLM分析提示
 web/
-    frontend.py    - Interactive web interface
+    frontend.py    - 交互式网页界面
     requirements_web.txt
-main.py           - FastAPI application
-requirements.txt   - Backend dependencies
+main.py           - FastAPI应用
+requirements.txt   - 后端依赖
 ```
 
-## Note
-This system requires access to a compatible LLM service. While configured for LLaMA models, it can be adapted for other language models. Regular updates to the pattern recognition database are recommended to maintain analysis accuracy.
+## 注意事项 (Note)
+本系统需要访问兼容的LLM服务。虽然配置为使用LLaMA模型，但可以适配其他语言模型。建议定期更新模式识别数据库以保持分析准确性。
